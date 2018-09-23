@@ -1,0 +1,3 @@
+# Turn Based Games in Tracery
+
+This project provides a way to compile turn-based games with a small state space from Python into [Tracery](https://tracery.io) grammars for use in [Cheap Bots, Done Quick!](https://cheapbotsdonequick.com) or [Cheap Bots, Toot Sweet](https://cheapbotstootsweet.com). The translation is accomplished by fully exploring the game's state graph and encoding each one in the grammar and reply files, which have a 4 megabyte size limit. This limits the compatible games to small examples such as [Noughts and Crosses](https://en.wikipedia.org/wiki/Noughts_and_crosses) and [Sim](https://en.wikipedia.org/wiki/Sim_(pencil_game)).
