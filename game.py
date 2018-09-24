@@ -30,7 +30,7 @@ class Game(metaclass=ABCMeta):
     def make_grammar(self, filename, state_graph, displays):
         grammar = self.grammar()
         for (state_code, options) in state_graph.items():
-            grammar['*'+state_code] = "{}[code:{}][options:{}]#display#".format(displays[state_code], state_code, '‚'.join(k for k in options.keys()))
+            grammar['*'+state_code] = "[code:{}][options:{}]{}".format(state_code, '‚'.join(k for k in options.keys()), displays[state_code])
         grammar['origin'] = "#*{}#".format(self.encode(self.start_state()))
         grammar['error'] = "Couldn't understand input. Reply in the format \"\\[code\\] \\[input\\]\"."
         with open(filename, 'w') as f:

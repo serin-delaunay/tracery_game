@@ -32,14 +32,20 @@ class NoughtsAndCrosses(Game):
         display = []
         player, b = self.boardify(state)
         outcome = arbiter.outcome(b, player)
-        if outcome['status'] != 'in-progress':
-            display.append(outcome['reason'])
-        display.append('#init#'+''.join(
+        svg = '#init#'+''.join(
             "[{0}:#{1}{0}#]".format(i, p)
             for (i, (r,c,p)) in
             enumerate(self.boardify(state)[1],1)
-            if not token.isempty(p)) + "#svg#")
-        return '\n'.join(display)
+            if not token.isempty(p)) + "#svg#"
+        if outcome['status'] != 'in-progress':
+            status = {
+                'squashed': '#draw#',
+                'winner': '#ai_win#',
+                'loser': '#player_win#'
+            }[outcome['reason']]
+            return svg + status
+        else:
+            return svg + "#display#"
     def encode(self, state):
         player, b = self.boardify(state)
         board_str = player + str(b)
@@ -58,6 +64,35 @@ class NoughtsAndCrosses(Game):
                 grammar['o'+str(i)] = '<circle cx="{0}50" cy="{1}50" r="30" stroke="black" stroke-width="13" fill="none" />'.format(c,r)
         grammar['init'] = ''.join('[{}:]'.format(i) for i in range(1,10))
         grammar['display'] = "Code: #code#\nOptions: #options#"
+        grammar['draw'] = [
+            "It's a draw#punctuation#",
+            "We both lose#punctuation#",
+            "We both win#punctuation#"
+        ]
+        grammar['ai_win'] = [
+            "#AI# win#punctuation#",
+            "A winner is me#punctuation#",
+            "I've won#punctuation#",
+            "You lose#punctuation#",
+            "You've lost#punctuation#"
+        ]
+        grammar['AI'] = [
+            "I",
+            "AI",
+            "CPU",
+            "Tracery",
+            "Bot",
+            "Computer",
+            "Robot"
+        ]
+        grammar['player_win'] = [
+            "You win#punctuation#",
+            "You've win#punctuation#"
+            "#AI# lose#punctuation#",
+            "#AI# lost#punctuation#",
+            "#AI# lose#punctuation#",
+        ]
+        grammar['punctuation'] = ['?', '.', '.', '.', '!', '!', '!', '!']
         grammar['svg'] = '{svg <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="533" height="300"><g width="300" height="300" transform="translate(116.67 0)"><rect width="300" height="300" rx="17" ry="17" fill="white"/><path d="M 100 15 l 0 270" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 200 15 l 0 270" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 15 100 l 270 0" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 15 200 l 270 0" stroke="black" stroke-width="13" stroke-linecap="round" />#1##2##3##4##5##6##7##8##9#</g></svg>}'
         return grammar
 
