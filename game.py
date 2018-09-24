@@ -8,24 +8,51 @@ class Game(metaclass=ABCMeta):
         pass
     @abstractmethod
     def start_state(self):
+        """
+        Consistently returns a single state which is used
+        as the root of the game's state graph.
+        """
         pass
     @abstractmethod
     def options(self, state):
+        """
+        Given a valid state, returns an iterable containing
+        valid player inputs for that state.
+        """
         pass
     @abstractmethod
     def result(self, state, input):
+        """
+        Given a valid state and valid input, returns an iterable container
+        of states resulting from that state+input combination.
+        """
         pass
     @abstractmethod
     def display(self, state):
+        """
+        Given a valid state, returns a string containing tracery code
+        that renders the game state.
+        """
         pass
     @abstractmethod
     def encode(self, state):
+        """
+        Given a valid state, returns a string uniquely encoding that state.
+        """
         pass
     @abstractmethod
     def grammar(self):
+        """
+        Returns a dictionary containing a partial tracery grammar,
+        which will be completed by the addition of rendered states.
+        """
         pass
     @abstractmethod
     def display_input(self, input):
+        """
+        Given a valid input, returns a string representing
+        that input for the player's use.
+        """
         pass
     def make_grammar(self, filename, state_graph, displays):
         grammar = self.grammar()
