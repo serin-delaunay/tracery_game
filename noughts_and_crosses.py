@@ -23,10 +23,13 @@ class NoughtsAndCrosses(Game):
         try:
             minmax = ai.evaluate(b, next_player)
         except ValueError:
-            return next_player + str(b)
-        move = random.choice(minmax.positions)
-        b[move] = next_player
-        return player + str(b)
+            return [next_player + str(b)]
+        results = []
+        for move in minmax.positions:
+            b[move] = next_player
+            results.append(player + str(b))
+            b[move] = '.'
+        return results
         
     def display(self, state):
         display = []
@@ -40,8 +43,8 @@ class NoughtsAndCrosses(Game):
         if outcome['status'] != 'in-progress':
             status = {
                 'squashed': '#draw#',
-                'winner': '#ai_win#',
-                'loser': '#player_win#'
+                'winner': '#player_win#',
+                'loser': '#ai_win#'
             }[outcome['reason']]
             return svg + status
         else:
