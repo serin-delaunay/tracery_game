@@ -40,7 +40,7 @@ class Game(metaclass=ABCMeta):
         replies = OrderedDict()
         for state_code in states_sorted:
             for (input, result) in state_graph[state_code].items():
-                replies['\\b'+re.escape('{} {}'.format(state_code, input))+'$'] = "{{unlisted}}#*{}#".format(self.encode(result))
+                replies['\\b{}\\b.*\\b{}\\b'.format(re.escape(state_code), re.escape(input))] = "{{unlisted}}#*{}#".format(self.encode(result))
         replies['.'] = "#error#"
         with open(filename, 'w') as f:
             json.dump(replies, f, indent='\t')
