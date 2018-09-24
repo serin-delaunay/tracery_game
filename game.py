@@ -2,6 +2,8 @@ from abc import ABCMeta, abstractmethod
 import json
 import re
 from collections import OrderedDict
+from tqdm import tqdm
+from itertools import count
 
 class Game(metaclass=ABCMeta):
     def __init__(self):
@@ -48,9 +50,8 @@ class Game(metaclass=ABCMeta):
         state_graph = {}
         displays = {}
         state_queue = {self.start_state()}
-        while state_queue:
+        for _ in tqdm(count()):
             state = state_queue.pop()
-            print(state)
             state_code = self.encode(state)
             state_results = {}
             if state_code not in state_graph:
@@ -66,5 +67,7 @@ class Game(metaclass=ABCMeta):
                     if result_code not in state_graph:
                         state_queue.add(result_state)
             state_graph[state_code] = state_results
+            if not state_queue:
+                break
         self.make_grammar(filename_base+'_grammar.json', state_graph, displays)
         self.make_replies(filename_base+'_replies.json', state_graph)
