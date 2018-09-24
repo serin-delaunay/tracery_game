@@ -39,8 +39,8 @@ class Game(metaclass=ABCMeta):
         states_sorted = sorted(state_graph.keys(), key = len, reverse=True)
         replies = OrderedDict()
         for state_code in states_sorted:
-            for (input, result) in state_graph[state_code].items():
-                replies['\\b{}\\b.*\\b{}\\b'.format(re.escape(state_code), re.escape(input))] = "{{unlisted}}#*{}#".format(self.encode(result))
+            for (input, results) in state_graph[state_code].items():
+                replies['\\b{}\\b.*\\b{}\\b'.format(re.escape(state_code), re.escape(input))] = "{{unlisted}}[result:{}]#result#".format(','.join('#*{}#'.format(self.encode(result)) for result in results))
         replies['.'] = "#error#"
         with open(filename, 'w') as f:
             json.dump(replies, f, indent='\t')
@@ -50,19 +50,21 @@ class Game(metaclass=ABCMeta):
         state_queue = {self.start_state()}
         while state_queue:
             state = state_queue.pop()
+            print(state)
             state_code = self.encode(state)
             state_results = {}
             if state_code not in state_graph:
                 state_display = self.display(state)
                 displays[state_code] = state_display
             for option in self.options(state):
-                result_state = self.result(state, option)
-                result_code = self.encode(result_state)
+                result_states = self.result(state, option)
                 input = self.display_input(option)
                 assert input not in state_results, 'input collision'
-                state_results[input] = result_state
-                if result_code not in state_graph:
-                    state_queue.add(result_state)
+                state_results[input] = result_states
+                for result_state in result_states:
+                    result_code = self.encode(result_state)
+                    if result_code not in state_graph:
+                        state_queue.add(result_state)
             state_graph[state_code] = state_results
         self.make_grammar(filename_base+'_grammar.json', state_graph, displays)
         self.make_replies(filename_base+'_replies.json', state_graph)
