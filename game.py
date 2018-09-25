@@ -4,6 +4,13 @@ import re
 from collections import OrderedDict
 
 class Game(metaclass=ABCMeta):
+    """
+    Base class for turn-based games to be compiled into CBDQ/CBTS grammars.
+    To use, instantiate a derived class and call the tracerise method.
+    Derived classes must implement the following functions
+    as described in their docstrings:
+    start_state, options, result, display, encode, grammar, display_input
+    """
     def __init__(self):
         pass
     @abstractmethod
@@ -72,6 +79,11 @@ class Game(metaclass=ABCMeta):
         with open(filename, 'w') as f:
             json.dump(replies, f, indent='\t')
     def tracerise(self, filename_base):
+        """
+        Generates a Tracery grammar and reply spec compatible with
+        Cheap Bots, Done Quick! or Cheap Bots, Toot Sweet!.
+        The output files are written to *_grammar.json and *_replies.json.
+        """
         state_graph = {}
         displays = {}
         state_queue = {self.start_state()}
