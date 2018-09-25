@@ -61,7 +61,7 @@ class Game(metaclass=ABCMeta):
         that input for the player's use.
         """
         pass
-    def make_grammar(self, filename, state_graph, displays):
+    def _make_grammar(self, filename, state_graph, displays):
         grammar = self.grammar()
         for (state_code, options) in state_graph.items():
             grammar['*'+state_code] = "[code:{}][options:{}]{}".format(state_code, '‚'.join(k for k in options.keys()), displays[state_code])
@@ -69,7 +69,7 @@ class Game(metaclass=ABCMeta):
         grammar['error'] = "Couldn't understand input. Reply in the format \"\\[code\\] \\[input\\]\"."
         with open(filename, 'w') as f:
             json.dump(grammar, f, indent='\t')
-    def make_replies(self, filename, state_graph):
+    def _make_replies(self, filename, state_graph):
         states_sorted = sorted(state_graph.keys(), key = len, reverse=True)
         replies = OrderedDict()
         for state_code in states_sorted:
@@ -105,5 +105,5 @@ class Game(metaclass=ABCMeta):
                     if result_code not in state_graph:
                         state_queue.add(result_state)
             state_graph[state_code] = state_results
-        self.make_grammar(filename_base+'_grammar.json', state_graph, displays)
-        self.make_replies(filename_base+'_replies.json', state_graph)
+        self._make_grammar(filename_base+'_grammar.json', state_graph, displays)
+        self._make_replies(filename_base+'_replies.json', state_graph)
