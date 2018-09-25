@@ -3,7 +3,7 @@ import json
 import re
 from collections import OrderedDict
 from tqdm import tqdm
-from itertools import count
+from itertools import count, chain
 
 class Game(metaclass=ABCMeta):
     def __init__(self):
@@ -42,7 +42,11 @@ class Game(metaclass=ABCMeta):
         replies = OrderedDict()
         for state_code in states_sorted:
             for (input, results) in state_graph[state_code].items():
-                replies['\\b{}\\b.*\\b{}\\b'.format(re.escape(state_code), re.escape(input))] = "{{unlisted}}[result:{}]#result#".format(','.join('#*{}#'.format(self.encode(result)) for result in results))
+                reply = ''.join("[{}:{}]".format(
+                    result_type,
+                    ','.join('#*{}#'.format(self.encode(result)) for result in result_list))
+                for (result_type, result_list) in results.items())
+                replies['\\b{}\\b.*\\b{}\\b'.format(re.escape(state_code), re.escape(input))] = "{unlisted}" + reply + "#result#"
         replies['.'] = "#error#"
         with open(filename, 'w') as f:
             json.dump(replies, f, indent='\t')
@@ -62,7 +66,7 @@ class Game(metaclass=ABCMeta):
                 input = self.display_input(option)
                 assert input not in state_results, 'input collision'
                 state_results[input] = result_states
-                for result_state in result_states:
+                for result_state in chain.from_iterable(result_states.values()):
                     result_code = self.encode(result_state)
                     if result_code not in state_graph:
                         state_queue.add(result_state)
