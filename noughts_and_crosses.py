@@ -103,7 +103,7 @@ class NoughtsAndCrosses(Game):
             "#AI# lost#punctuation#",
             "#AI# lose#punctuation#",
         ]
-        grammar['result'] = ['#optimal#']*49 + ['#suboptimal#']
+        grammar['result'] = ['#optimal#']*29 + ['#suboptimal#']
         grammar['punctuation'] = ['?', '.', '.', '.', '!', '!', '!', '!']
         grammar['svg'] = '{svg <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="533" height="300"><g width="300" height="300" transform="translate(116.67 0)"><rect width="300" height="300" rx="17" ry="17" fill="white"/><path d="M 100 15 l 0 270" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 200 15 l 0 270" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 15 100 l 270 0" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 15 200 l 270 0" stroke="black" stroke-width="13" stroke-linecap="round" />#1##2##3##4##5##6##7##8##9#</g></svg>}'
         return grammar
