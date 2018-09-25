@@ -5,7 +5,18 @@ from game import Game
 
 class NoughtsAndCrosses(Game):
     def __init__(self):
-        pass
+        self.game_over_messages = {
+            'x':{
+                'squashed': '#draw#',
+                'loser': '#ai_win#',
+                'winner': '#player_win#'
+            },
+            'o':{
+                'squashed': '#draw#',
+                'winner': '#ai_win#',
+                'loser': '#player_win#'
+            }
+        }
     def start_state(self):
         return 'x'
     def boardify(self, state):
@@ -49,11 +60,7 @@ class NoughtsAndCrosses(Game):
             enumerate(self.boardify(state)[1],1)
             if not token.isempty(p)) + "#svg#"
         if outcome['status'] != 'in-progress':
-            status = {
-                'squashed': '#draw#',
-                'winner': '#player_win#',
-                'loser': '#ai_win#'
-            }[outcome['reason']]
+            status = self.game_over_messages[player][outcome['reason']]
             return svg + status
         else:
             return svg + "#display#"
@@ -98,7 +105,7 @@ class NoughtsAndCrosses(Game):
         ]
         grammar['player_win'] = [
             "You win#punctuation#",
-            "You've win#punctuation#"
+            "You've won#punctuation#"
             "#AI# lose#punctuation#",
             "#AI# lost#punctuation#",
             "#AI# lose#punctuation#",
