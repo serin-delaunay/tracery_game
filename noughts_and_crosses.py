@@ -60,7 +60,7 @@ class NoughtsAndCrosses(Game):
             if not token.isempty(p))
         if outcome['status'] != 'in-progress':
             status = self.game_over_messages[player][outcome['reason']]
-            return svg + status
+            return svg + status + "#display_end#"
         else:
             return svg + "#display#"
     def encode(self, state):
@@ -81,6 +81,7 @@ class NoughtsAndCrosses(Game):
                 grammar['o'+str(i)] = '[{0}:<circle cx="{1}50" cy="{2}50" r="30" stroke="black" stroke-width="13" fill="none" />][{0}a:nought]'.format(i, c, r)
         grammar['init'] = ''.join('[{}:]'.format(i) for i in range(1,10)) + ''.join('[{}a:blank]'.format(i) for i in range(1,10))
         grammar['display'] = "#svg##alt#Code: #code#\nOptions: #options#"
+        grammar['display_end'] = "#svg##alt#"
         grammar['draw'] = [
             "It's a draw#punctuation#",
             "We both lose#punctuation#",
