@@ -9,7 +9,7 @@ class Game(metaclass=ABCMeta):
     def __init__(self):
         pass
     @abstractmethod
-    def start_state(self):
+    def start_states(self):
         pass
     @abstractmethod
     def options(self, state):
@@ -33,7 +33,7 @@ class Game(metaclass=ABCMeta):
         grammar = self.grammar()
         for (state_code, options) in state_graph.items():
             grammar['*'+state_code] = "[code:{}][options:{}]{}".format(state_code, '‚'.join(sorted(str(k) for k in options.keys())), displays[state_code])
-        grammar['origin'] = "#*{}#".format(self.encode(self.start_state()))
+        grammar['origin'] = ["#*{}#".format(self.encode(state) for state in self.start_states())]
         grammar['error'] = "Couldn't understand input. Reply in the format \"\\[code\\] \\[input\\]\"."
         with open(filename, 'w') as f:
             json.dump(grammar, f, indent='\t', sort_keys=True)
@@ -53,7 +53,7 @@ class Game(metaclass=ABCMeta):
     def tracerise(self, filename_base):
         state_graph = {}
         displays = {}
-        state_queue = {self.start_state()}
+        state_queue = set(self.start_states())
         for _ in tqdm(count()):
             state = state_queue.pop()
             state_code = self.encode(state)
