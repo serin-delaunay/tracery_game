@@ -1,6 +1,5 @@
 from xo import board, ai, token, arbiter
 import base62
-import random
 from game import Game
 
 class NoughtsAndCrosses(Game):
@@ -36,10 +35,10 @@ class NoughtsAndCrosses(Game):
         player, b = self.boardify(state)
         outcome = arbiter.outcome(b, player)
         svg = '#init#'+''.join(
-            "[{0}:#{1}{0}#]".format(i, p)
+            "#{1}{0}#".format(i, p)
             for (i, (r,c,p)) in
             enumerate(self.boardify(state)[1],1)
-            if not token.isempty(p)) + "#svg#"
+            if not token.isempty(p))
         if outcome['status'] != 'in-progress':
             status = {
                 'squashed': '#draw#',
@@ -63,10 +62,10 @@ class NoughtsAndCrosses(Game):
         for r in range(3):
             for c in range(3):
                 i = 3*r+c+1
-                grammar['x'+str(i)] = '<path d="M {0}20 {1}20 l 60 60" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M {0}80 {1}20 l -60 60" stroke="black" stroke-width="13" stroke-linecap="round" />'.format(c,r)
-                grammar['o'+str(i)] = '<circle cx="{0}50" cy="{1}50" r="30" stroke="black" stroke-width="13" fill="none" />'.format(c,r)
-        grammar['init'] = ''.join('[{}:]'.format(i) for i in range(1,10))
-        grammar['display'] = "Code: #code#\nOptions: #options#"
+                grammar['x'+str(i)] = '[{0}:<path d="M {1}20 {2}20 l 60 60" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M {1}80 {2}20 l -60 60" stroke="black" stroke-width="13" stroke-linecap="round" />][{0}a:cross]'.format(i, c, r)
+                grammar['o'+str(i)] = '[{0}:<circle cx="{1}50" cy="{2}50" r="30" stroke="black" stroke-width="13" fill="none" />][{0}a:nought]'.format(i, c, r)
+        grammar['init'] = ''.join('[{}:]'.format(i) for i in range(1,10)) + ''.join('[{}a:blank]'.format(i) for i in range(1,10))
+        grammar['display'] = "#svg##alt#Code: #code#\nOptions: #options#"
         grammar['draw'] = [
             "It's a draw#punctuation#",
             "We both lose#punctuation#",
@@ -97,6 +96,7 @@ class NoughtsAndCrosses(Game):
         ]
         grammar['punctuation'] = ['?', '.', '.', '.', '!', '!', '!', '!']
         grammar['svg'] = '{svg <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="533" height="300"><g width="300" height="300" transform="translate(116.67 0)"><rect width="300" height="300" rx="17" ry="17" fill="white"/><path d="M 100 15 l 0 270" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 200 15 l 0 270" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 15 100 l 270 0" stroke="black" stroke-width="13" stroke-linecap="round" /><path d="M 15 200 l 270 0" stroke="black" stroke-width="13" stroke-linecap="round" />#1##2##3##4##5##6##7##8##9#</g></svg>}'
+        grammar['alt'] = '{alt row 1 #1a# #2a# #3a# row 2 #4a# #5a# #6a# row 3 #7a# #8a# #9a#}'
         return grammar
 
 if __name__ == '__main__':
