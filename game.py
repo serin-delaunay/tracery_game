@@ -36,7 +36,7 @@ class Game(metaclass=ABCMeta):
         grammar['origin'] = "#*{}#".format(self.encode(self.start_state()))
         grammar['error'] = "Couldn't understand input. Reply in the format \"\\[code\\] \\[input\\]\"."
         with open(filename, 'w') as f:
-            json.dump(grammar, f, indent='\t')
+            json.dump(grammar, f, indent='\t', sort_keys=True)
     def make_replies(self, filename, state_graph):
         states_sorted = sorted(state_graph.keys(), key = len, reverse=True)
         replies = OrderedDict()
