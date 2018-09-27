@@ -16,8 +16,10 @@ class NoughtsAndCrosses(Game):
                 'loser': '#player_win#'
             }
         }
-    def start_state(self):
-        return 'x'
+    def start_states(self):
+        message = "Would you like to play Noughts and Crosses?"
+        start = "I'll start."
+        return [('x', message+'\n')]*9 + [('x'+'.'*i + 'o', message+' '+start+'\n') for i in range(9)]
     def boardify(self, state):
         return state[0], board.Board.fromstring(state[1:])
     def options(self, state):
