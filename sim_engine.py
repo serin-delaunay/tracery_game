@@ -48,6 +48,8 @@ class SimState(NamedTuple):
         return SimState(self.player.change(), self.colours[:index] + (self.player.colour(),) + self.colours[index+1:])
     def __str__(self):
         return '{}, {}'.format(''.join(c.name[0] for c in self.colours), self.player)
+    def encode(self):
+        return ''.join(c.name[0] for c in (self.player,) + self.colours)
 
 class StateInvariants(NamedTuple):
     player: Player
