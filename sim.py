@@ -22,7 +22,7 @@ class Sim(Game):
         return state.encode()
     def grammar(self):
         grammar = {}
-        positions = {v: (1000*cos(v*pi/3), 1000*sin(v*pi/3)) for v in self.engine.vertices}
+        positions = {v: (1000*cos((v+4)*pi/3), 1000*sin((v+4)*pi/3)) for v in self.engine.vertices}
         for edge in self.engine.edges:
             grammar[f'r{self.engine.edge_ids[edge]}'] = f'<line x1="{positions[edge[0]][0]}" y1="{positions[edge[0]][1]}" x2="{positions[edge[1]][0]}" y2="{positions[edge[1]][1]}" stroke="red" stroke-width="20" />'
             grammar[f'b{self.engine.edge_ids[edge]}'] = f'<line x1="{positions[edge[0]][0]}" y1="{positions[edge[0]][1]}" x2="{positions[edge[1]][0]}" y2="{positions[edge[1]][1]}" stroke="blue" stroke-width="20" />'
