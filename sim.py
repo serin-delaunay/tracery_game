@@ -13,7 +13,11 @@ class Sim(Game):
     def options(self, state):
         return list(self.engine.state_details[state].successors.keys())
     def result(self, state, input):
-        return {'only': [self.engine.state_details[state].successors[input]]}
+        next_state = self.engine.state_details[state].successors[input]
+        next_details = self.engine.state_details[next_state]
+        if next_details.in_progress:
+            next_state = next_details.successors[next_details.optimal_play]
+        return {'only': [next_state]}
     def display(self, state):
         set_colours = ''.join(f'[{e}:#{c.name[0]}{e}#]' for (e, c) in enumerate(state.colours) if c is not Colour.empty)
         return '#init#' + set_colours + '#display#'
