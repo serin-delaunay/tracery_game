@@ -69,7 +69,7 @@ class StateDetails:
     in_progress: Optional[bool] = None
     winner: Optional[Player] = None
     value: Optional[int] = None
-    optimal_play: Optional[Tuple[int, int]] = None
+    optimal_play: Optional[int] = None
     successors: Dict[int, SimState] = field(default_factory=dict)
 
 class SimEngine:
