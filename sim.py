@@ -43,12 +43,12 @@ class Sim(Game):
 </g>
 <g transform="scale(1.128 1.128)" font-family="Verdana" font-size="126" text-anchor="middle">
 <text>
-<tspan x="{positions[0][0]}" y="{positions[0][1]}" alignment-baseline="central">0</tspan>
-<tspan x="{positions[1][0]}" y="{positions[1][1]}" alignment-baseline="central">1</tspan>
-<tspan x="{positions[2][0]}" y="{positions[2][1]}" alignment-baseline="central">2</tspan>
-<tspan x="{positions[3][0]}" y="{positions[3][1]}" alignment-baseline="central">3</tspan>
-<tspan x="{positions[4][0]}" y="{positions[4][1]}" alignment-baseline="central">4</tspan>
-<tspan x="{positions[5][0]}" y="{positions[5][1]}" alignment-baseline="central">5</tspan>
+<tspan x="{positions[0][0]}" y="{positions[0][1]}" alignment-baseline="central">1</tspan>
+<tspan x="{positions[1][0]}" y="{positions[1][1]}" alignment-baseline="central">2</tspan>
+<tspan x="{positions[2][0]}" y="{positions[2][1]}" alignment-baseline="central">3</tspan>
+<tspan x="{positions[3][0]}" y="{positions[3][1]}" alignment-baseline="central">4</tspan>
+<tspan x="{positions[4][0]}" y="{positions[4][1]}" alignment-baseline="central">5</tspan>
+<tspan x="{positions[5][0]}" y="{positions[5][1]}" alignment-baseline="central">6</tspan>
 </text>
 </g>
 </g>
@@ -60,7 +60,7 @@ class Sim(Game):
         grammar['result'] = '#only#'
         return grammar
     def display_input(self, input):
-        return ' '.join(map(str, self.engine.edges[input]))
+        return ' '.join(str(v+1) for v in self.engine.edges[input])
 
 if __name__ == '__main__':
     Sim().tracerise('sim')
