@@ -30,8 +30,8 @@ class Sim(Game):
         grammar['svg'] = f'''
 {{svg <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1600" height="900" id="Complete graph K6">
 <rect width="100%" height="100%" fill="none"/>
-<g transform="translate(350 450) scale(0.4 0.4) translate(1000 0)">
-<circle cx = "0" cy="0" r="1050" stroke="none" fill="lightgrey"/>
+<circle cx = "800" cy="450" r="450" stroke="none" fill="white"/>
+<g transform="translate(800 450) scale(0.37 0.37)">
 #0##1##2##3##4##5##6##7##8##9##10##11##12##13##14#
 <g style="fill:green;stroke:black;stroke-width:5">
 <circle cx="{positions[0][0]}" cy="{positions[0][1]}" r="35"/>
@@ -40,6 +40,16 @@ class Sim(Game):
 <circle cx="{positions[3][0]}" cy="{positions[3][1]}" r="35"/>
 <circle cx="{positions[4][0]}" cy="{positions[4][1]}" r="35"/>
 <circle cx="{positions[5][0]}" cy="{positions[5][1]}" r="35"/>
+</g>
+<g transform="scale(1.128 1.128)" font-family="Verdana" font-size="126" text-anchor="middle">
+<text>
+<tspan x="{positions[0][0]}" y="{positions[0][1]}" alignment-baseline="central">0</tspan>
+<tspan x="{positions[1][0]}" y="{positions[1][1]}" alignment-baseline="central">1</tspan>
+<tspan x="{positions[2][0]}" y="{positions[2][1]}" alignment-baseline="central">2</tspan>
+<tspan x="{positions[3][0]}" y="{positions[3][1]}" alignment-baseline="central">3</tspan>
+<tspan x="{positions[4][0]}" y="{positions[4][1]}" alignment-baseline="central">4</tspan>
+<tspan x="{positions[5][0]}" y="{positions[5][1]}" alignment-baseline="central">5</tspan>
+</text>
 </g>
 </g>
 </svg>}}
