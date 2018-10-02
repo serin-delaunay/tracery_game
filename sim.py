@@ -9,7 +9,13 @@ class Sim(Game):
         self.engine.map_state_space()
         self.engine.perform_minimax()
     def start_states(self):
-        return [(SimState.initial_state(), "Would you like to play a game of Sim?\n")]
+        initial_state = SimState.initial_state()
+        details = self.engine.state_details[initial_state]
+        second_state = details.successors[details.optimal_play]
+        return [
+            (initial_state, "Would you like to play a game of Sim?\n"),
+            (second_state, "Would you like to play a game of Sim? I'll start.\n")
+            ]
     def options(self, state):
         return list(self.engine.state_details[state].successors.keys())
     def result(self, state, input):
