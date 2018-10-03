@@ -42,10 +42,10 @@ class Sim(Game):
             grammar[f'b{self.engine.edge_ids[edge]}'] = f'<line x1="{positions[edge[0]][0]}" y1="{positions[edge[0]][1]}" x2="{positions[edge[1]][0]}" y2="{positions[edge[1]][1]}" stroke="blue" stroke-width="20" />'
             grammar[f'e{self.engine.edge_ids[edge]}'] = f'<line x1="{positions[edge[0]][0]}" y1="{positions[edge[0]][1]}" x2="{positions[edge[1]][0]}" y2="{positions[edge[1]][1]}" stroke="black" stroke-width="15" />'
         grammar['svg'] = f'''
-{{svg <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1600" height="900" id="Complete graph K6">
+{{svg <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="960" height="540" id="Complete graph K6">
 <rect width="100%" height="100%" fill="none"/>
-<circle cx = "800" cy="450" r="450" stroke="none" fill="white"/>
-<g transform="translate(800 450) scale(0.37 0.37)">
+<circle cx = "480" cy="270" r="270" stroke="none" fill="white"/>
+<g transform="translate(480 270) scale(0.22 0.22)">
 #0##1##2##3##4##5##6##7##8##9##10##11##12##13##14#
 <g style="fill:green;stroke:black;stroke-width:5">
 <circle cx="{positions[0][0]}" cy="{positions[0][1]}" r="35"/>
