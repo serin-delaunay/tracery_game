@@ -1,6 +1,7 @@
 from game import Game
 from sim_engine import SimEngine, SimState, Colour
 from math import sin, cos, pi
+import base62
 
 
 class Sim(Game):
@@ -29,7 +30,10 @@ class Sim(Game):
         return '#init#' + set_colours + '#display#'
         
     def encode(self, state):
-        return state.encode()
+        state_string = state.encode()
+        state_ternary = state_string.translate(str.maketrans({'r':'0', 'b':'1', 'e':'2'}))
+        state_num = int(state_ternary, 3)
+        return base62.encode(state_num)
     def grammar(self):
         grammar = {}
         positions = {v: (1000*cos((v+4)*pi/3), 1000*sin((v+4)*pi/3)) for v in self.engine.vertices}
