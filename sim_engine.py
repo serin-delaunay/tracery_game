@@ -6,6 +6,7 @@ from itertools import combinations, chain, count
 from dataclasses import dataclass, field
 from collections import defaultdict
 from tqdm import tqdm
+from pickle import dump, load
 
 class Colour(Enum):
     empty = 0
@@ -98,9 +99,11 @@ class SimEngine:
             )
             for vertex in self.vertices
         }
+        self.complete = False
         self.canonical_states = {}
         self.states_by_invariants = defaultdict(list)
         self.state_details = {}
+        self.load_data()
     def add_canonical_state(self, state):
         self.canonical_states[state] = state
         self.states_by_invariants[self.invariants(state)].append(state)
@@ -146,8 +149,22 @@ class SimEngine:
                 details.value = state.player.win_value()
                 return
         details.in_progress = True
-                    
+    def load_data(self):
+        if self.complete:
+            return True
+        try:
+            with open('sim_data.pck', 'rb') as f:
+                self.canonical_states, self.states_by_invariants, self.state_details = load(f)
+        except Exception:
+            return False
+        self.complete = True
+        return True
+    def save_data(self):
+        with open('sim_data.pck', 'wb') as f:
+            dump((self.canonical_states, self.states_by_invariants, self.state_details), f)
     def map_state_space(self):
+        if self.complete:
+            return
         state = SimState.initial_state()
         self.canonicalise(state)
         self.state_details[state].in_progress = True
@@ -168,7 +185,11 @@ class SimEngine:
             if not state_queue:
                 break
     def perform_minimax(self):
+        if self.complete:
+            return
         self.minimax(SimState.initial_state())
+        self.save_data()
+        self.complete = True
     def minimax(self, state):
         details = self.state_details[state]
         if details.value is not None:
